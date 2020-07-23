@@ -39,8 +39,12 @@ function match(data, pattern) {
 match.not = (pattern) => (data) => !match(data, pattern)
 match.predicate = (pattern) => (data) => match(data, pattern)
 
-module.exports = { 
-  match,
-  not: match.not,
-  predicate: match.predicate
+match.case = (data, patterns) => {
+  for (const [pattern, fn] of patterns) {
+    if (match(data, pattern)) {
+      return fn(data)
+    }
+  }
 }
+
+module.exports = match
